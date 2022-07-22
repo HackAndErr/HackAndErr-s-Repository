@@ -1,6 +1,6 @@
 package Marketplace;
 
-public class Product {
+public class Product implements Id{
     private int id;
     private String name;
     private double price;
@@ -30,6 +30,7 @@ public class Product {
         this.price = price;
     }
 
+    //Constructor
     public Product(int id, String name, double price){
         this.id = id;
         this.name = name;
