@@ -1,6 +1,6 @@
 package Marketplace;
 
-public class Product implements Id{
+public class Product{
     private int id;
     private String name;
     private double price;

@@ -1,15 +1,12 @@
 package Marketplace;
 
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class Menu {
 
-        private static ArrayList<User> userList = Lists.userList;
-        private static ArrayList<Product> productList = Lists.productList;
+        static HashMap<Integer, User> users = Storage.users;
+        static HashMap<Integer, Product> products = Storage.products;
 
 
 
@@ -33,8 +30,8 @@ public class Menu {
             String chosen = scanner.nextLine();
 
             switch (chosen){
-                case "1": show("List of all users:", userList); break;
-                case "2": show("List of all products", productList); break;
+                case "1": show("List of all users:", users); break;
+                case "2": show("List of all products", products); break;
                 case "3":
                     System.out.print("Enter user's id: ");
                     int uid = Integer.parseInt(scanner.nextLine());
@@ -58,10 +55,10 @@ public class Menu {
 
     }
 
-    public static <T> void show(String message, ArrayList<T> list){
+    public static <T> void show(String message, HashMap<Integer, T> map){
         System.out.println(message);
-        for(T elem : list){
-            System.out.println(elem);
+        for(int elem : map.keySet()){
+            System.out.println(map.get(elem));
         }
 
         System.out.println();
@@ -69,19 +66,19 @@ public class Menu {
 
     public static void buyProduct(int userId, int productId){
 
-        Optional<User> curUserOpt = Util.findObjectById(userId, userList);
-        if(!curUserOpt.isPresent()){
-            System.out.println("User hasn't been found. Check your id.");
-            return;
-        }
-        User curUser = curUserOpt.get();
 
-        Optional<Product> curProductOpt = Util.findObjectById(productId, productList);
-        if(!curProductOpt.isPresent()){
-            System.out.println("Product hasn't been found. Check your id.");
+        if(!users.containsKey(userId)){
+            System.out.println("User hasn't been found. Check your id\n");
             return;
         }
-        Product curProduct = curProductOpt.get();
+
+        if(!products.containsKey(productId)){
+            System.out.println("Product hasn't been found. Check your id\n");
+            return;
+        }
+
+        User curUser = users.get(userId);
+        Product curProduct = products.get(productId);
 
         try {
             curUser.setAmountOfMoney(curUser.getAmountOfMoney() - curProduct.getPrice());
@@ -94,12 +91,11 @@ public class Menu {
     }
 
     public static void displayUserShoppingCart(int userId){
-        Optional<User> curUserOpt = Util.findObjectById(userId, userList);
-        if(!curUserOpt.isPresent()){
-            System.out.println("User hasn't been found. Check your id.");
+        if(!users.containsKey(userId)){
+            System.out.println("User hasn't been found. Check your id\n");
             return;
         }
-        User curUser = curUserOpt.get();
+        User curUser = users.get(userId);
 
         HashMap<Product, Integer> shoppingCart = curUser.getShoppingCart();
         for(Product product : shoppingCart.keySet()){
@@ -111,16 +107,15 @@ public class Menu {
     }
 
     public static void displayListOfUsersThatBoughtProduct(int productId){
-        Optional<Product> curProductOpt = Util.findObjectById(productId, productList);
-        if(!curProductOpt.isPresent()){
-            System.out.println("Product hasn't been found. Check your id.");
+        if(!products.containsKey(productId)){
+            System.out.println("Product hasn't been found. Check your id\n");
             return;
         }
-        Product curProduct = curProductOpt.get();
+        Product curProduct = products.get(productId);
 
-        for(User user : userList){
-            if(user.getShoppingCart().containsKey(curProduct)){
-                System.out.println(user);
+        for(int user : users.keySet()){
+            if(users.get(user).getShoppingCart().containsKey(curProduct)){
+                System.out.println(users.get(user));
             }
         }
         System.out.println();

@@ -1,9 +1,8 @@
 package Marketplace;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-public class User implements Id{
+public class User{
     private int id;
     private String firstName;
     private String lastName;
