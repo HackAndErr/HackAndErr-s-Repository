@@ -7,7 +7,11 @@ public class User{
     private String firstName;
     private String lastName;
     private double amountOfMoney;
-    private HashMap<Product, Integer> shoppingCart = new HashMap<>();
+
+    /*Initialising a shopping cart as a map: key is product's id and value is
+    amount of this product that user has bought
+     */
+    private HashMap<Integer, Integer> shoppingCart = new HashMap<>();
 
 //Getters and setters
     public int getId() {
@@ -45,23 +49,25 @@ public class User{
         this.amountOfMoney = amountOfMoney;
     }
 
-    public HashMap<Product, Integer> getShoppingCart() {
+    public HashMap<Integer, Integer> getShoppingCart() {
         return shoppingCart;
     }
 
-    public void setShoppingCart(HashMap<Product, Integer> shoppingCart) {
+    public void setShoppingCart(HashMap<Integer, Integer> shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
 
-    public void addNewProductToShoppingCart(Product product){
-        if(!shoppingCart.containsKey(product)){
-            shoppingCart.put(product, 1);
+    public void addNewProductToShoppingCart(int productId){
+        //Buying the current product for a first time
+        if(!shoppingCart.containsKey(productId)){
+            shoppingCart.put(productId, 1);
             return;
         }
 
-        int amount = shoppingCart.get(product);
+        //As user buys the same product again, an amount of it in his shopping cart increases
+        int amount = shoppingCart.get(productId);
         amount++;
-        shoppingCart.put(product, amount);
+        shoppingCart.put(productId, amount);
     }
 
 //Constructor

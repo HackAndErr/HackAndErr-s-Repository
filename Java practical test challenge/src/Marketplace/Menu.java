@@ -1,11 +1,11 @@
 package Marketplace;
 
 import java.util.HashMap;
-import java.util.Random;
 import java.util.Scanner;
 
 public class Menu {
 
+    //Accessing our storage
         static HashMap<Integer, User> users = Storage.users;
         static HashMap<Integer, Product> products = Storage.products;
 
@@ -34,43 +34,58 @@ public class Menu {
 
             String chosen = scanner.nextLine();
 
+            int uid; //user's id
+            int pid; //product's id
+
             switch (chosen){
                 case "1": show("List of all users:", users); break;
                 case "2": show("List of all products", products); break;
                 case "3":
                     System.out.print("Enter user's id: ");
-                    int uid = Integer.parseInt(scanner.nextLine());
+                    uid = Util.getNumber(scanner.nextLine());
                     System.out.print("Enter product's id: ");
-                    int pid = Integer.parseInt(scanner.nextLine());
+                    pid = Util.getNumber(scanner.nextLine());
                     buyProduct(uid, pid);
                     break;
                 case "4":
                     System.out.print("Enter user's id: ");
-                    uid = Integer.parseInt(scanner.nextLine());
+                    uid = Util.getNumber(scanner.nextLine());
                     displayUserShoppingCart(uid);
                     break;
                 case "5":
                     System.out.print("Enter product's id: ");
-                    pid = Integer.parseInt(scanner.nextLine());
+                    pid = Util.getNumber(scanner.nextLine());
                     displayListOfUsersThatBoughtProduct(pid);
                     break;
                 case "6":
-                    addNewUser("", "", 1);
+                    System.out.print("Enter first name: ");
+                    String firstName = scanner.nextLine();
+                    System.out.print("Enter last name: ");
+                    String lastName = scanner.nextLine();
+                    System.out.print("Enter amount of money: ");
+                    double amountOfMoney = Util.getNumber(scanner.nextLine());
+                    addNewUser(firstName, lastName, amountOfMoney);
                     break;
                 case "7":
-                    addNewProduct("", 1);
+                    System.out.print("Enter name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter price: ");
+                    double price = Util.getNumber(scanner.nextLine());
+                    addNewProduct(name, price);
                     break;
                 case "8":
                     System.out.print("Enter user's id: ");
-                    uid = Integer.parseInt(scanner.nextLine());
+                    uid = Util.getNumber(scanner.nextLine());
                     deleteUser(uid);
                     break;
                 case "9":
                     System.out.print("Enter product's id: ");
-                    pid = Integer.parseInt(scanner.nextLine());
+                    pid = Util.getNumber(scanner.nextLine());
                     deleteProduct(pid);
                     break;
-                case "q": break loop;
+                case "q":
+                    scanner.close();
+                    break loop;
             }
         }
 
@@ -87,7 +102,6 @@ public class Menu {
 
     public static void buyProduct(int userId, int productId){
 
-
         if(!users.containsKey(userId)){
             System.out.println("User hasn't been found. Check your id\n");
             return;
@@ -99,10 +113,10 @@ public class Menu {
         }
 
         User curUser = users.get(userId);
-        Product curProduct = products.get(productId);
+        int curProduct = productId;
 
         try {
-            curUser.setAmountOfMoney(curUser.getAmountOfMoney() - curProduct.getPrice());
+            curUser.setAmountOfMoney(curUser.getAmountOfMoney() - products.get(curProduct).getPrice());
             curUser.addNewProductToShoppingCart(curProduct);
             System.out.println("Purchase successful\n");
         } catch (NotEnoughMoneyException e) {
@@ -118,10 +132,10 @@ public class Menu {
         }
         User curUser = users.get(userId);
 
-        HashMap<Product, Integer> shoppingCart = curUser.getShoppingCart();
-        for(Product product : shoppingCart.keySet()){
-            String productStr = product.toString();
-            String amountStr = shoppingCart.get(product).toString();
+        HashMap<Integer, Integer> shoppingCart = curUser.getShoppingCart();
+        for(int productId : shoppingCart.keySet()){
+            String productStr = products.get(productId).toString();
+            String amountStr = shoppingCart.get(productId).toString();
             System.out.println(productStr + " ✕ " + amountStr);
         }
         System.out.println();
@@ -194,9 +208,11 @@ public class Menu {
 
         products.remove(productId);
 
-//        for(int user : users.keySet()){
-//            HashMap<Integer, Product> shoppingCart = users.get(user).getShoppingCart();
-//        }
+        for(int user : users.keySet()){
+            HashMap<Integer, Integer> shoppingCart = users.get(user).getShoppingCart();
+            if(!shoppingCart.containsKey(productId)) continue;
+            shoppingCart.remove(productId);
+        }
 
         System.out.println("Product has been successfully deleted\n");
     }
