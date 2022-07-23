@@ -1,6 +1,7 @@
 package Marketplace;
 
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Menu {
@@ -24,6 +25,10 @@ public class Menu {
             System.out.println("3. Buy a product");
             System.out.println("4. Display list of user products by user id");
             System.out.println("5. Display list of users that bought product by product id");
+            System.out.println("6. Add new user");
+            System.out.println("7. Add new product");
+            System.out.println("8. Delete the user");
+            System.out.println("9. Delete the product");
             System.out.println("q. Stop the program");
             System.out.print("Enter an operation's number (or q): ");
 
@@ -48,6 +53,22 @@ public class Menu {
                     System.out.print("Enter product's id: ");
                     pid = Integer.parseInt(scanner.nextLine());
                     displayListOfUsersThatBoughtProduct(pid);
+                    break;
+                case "6":
+                    addNewUser("", "", 1);
+                    break;
+                case "7":
+                    addNewProduct("", 1);
+                    break;
+                case "8":
+                    System.out.print("Enter user's id: ");
+                    uid = Integer.parseInt(scanner.nextLine());
+                    deleteUser(uid);
+                    break;
+                case "9":
+                    System.out.print("Enter product's id: ");
+                    pid = Integer.parseInt(scanner.nextLine());
+                    deleteProduct(pid);
                     break;
                 case "q": break loop;
             }
@@ -119,5 +140,64 @@ public class Menu {
             }
         }
         System.out.println();
+    }
+
+    public static void addNewUser(String firstName, String lastName, double amountOfMoney){
+
+        if(firstName == null || lastName == null){
+            System.out.println("The name is incorrect");
+            return;
+        }
+
+        if(amountOfMoney < 0){
+            System.out.println("An amount of money cannot be below zero");
+            return;
+        }
+
+        int id = users.size(); //Giving the id next after last element of users map
+
+        users.put(id, new User(id, firstName, lastName, amountOfMoney));
+    }
+
+    public static void addNewProduct(String name, double price){
+
+        if(name == null){
+            System.out.println("The name is incorrect");
+            return;
+        }
+
+        if(price < 0){
+            System.out.println("A price cannot be below zero");
+            return;
+        }
+
+        int id = products.size(); //Giving the id next after last element of products map
+
+        products.put(id, new Product(id, name, price));
+    }
+
+    public static void deleteUser(int userId){
+        if(!users.containsKey(userId)){
+            System.out.println("User hasn't been found\n");
+            return;
+        }
+
+        users.remove(userId);
+        System.out.println("User has been successfully deleted\n");
+    }
+
+    public static  void deleteProduct(int productId){
+        if(!products.containsKey(productId)){
+            System.out.println("Product hasn't been found\n");
+            return;
+        }
+
+        products.remove(productId);
+
+//        for(int user : users.keySet()){
+//            HashMap<Integer, Product> shoppingCart = users.get(user).getShoppingCart();
+//        }
+
+        System.out.println("Product has been successfully deleted\n");
     }
 }
