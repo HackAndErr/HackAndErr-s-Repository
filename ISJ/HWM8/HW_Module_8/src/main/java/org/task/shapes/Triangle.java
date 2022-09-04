@@ -1,7 +1,9 @@
 package org.task.shapes;
 
 public class Triangle extends Shape{
-    private double a, b, c;
+    private double a;
+    private double b;
+    private double c;
 
     public Triangle(double a, double b, double c){
         super("Triangle");

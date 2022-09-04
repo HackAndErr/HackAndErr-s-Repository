@@ -4,7 +4,9 @@ import org.task.shapes.Shape;
 import org.task.shapes.exceptions.AngleOverflowException;
 
 public class Parallelogramm extends Shape {
-    private double a, b, acuteAngle; //Гострий кут у радіанах
+    private double a;
+    private double b;
+    private double acuteAngle; //Гострий кут у радіанах
 
     public Parallelogramm(double a, double b, double acuteAngle){
         super("Parallelogramm");

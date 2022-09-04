@@ -3,7 +3,11 @@ package org.task.shapes.quadrangles;
 import org.task.shapes.Shape;
 
 public class Trapezoid extends Shape {
-    private double a, b, c, d, height;
+    private double a;
+    private double  b;
+    private double  c;
+    private double d;
+    private double height;
 
     public Trapezoid(double a, double b, double c, double d, double height) {
         super("Trapezoid");
