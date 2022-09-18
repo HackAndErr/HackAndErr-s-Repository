@@ -2,16 +2,17 @@ package org.collections;
 
 import java.util.Arrays;
 
-public class MyArrayList <T> {
+public class MyQueue <T>{
     private T[] array = (T[]) new Object[0];
-
-    public MyArrayList(){
-
-    }
 
     public void add(T value){
         array = Arrays.copyOf(array, array.length+1);
-        array[array.length-1] = value;
+
+        for(int i = array.length-1; i > 0; i--){
+            array[i] = array[i-1];
+
+        }
+        array[0] = value;
     }
 
     public void remove(int index){
@@ -33,11 +34,14 @@ public class MyArrayList <T> {
         return array.length;
     }
 
-    public T get(int index){
-        return array[index];
+    public T peek(){
+        return array[array.length-1];
     }
 
-
-
+    public T pop(){
+        T res = peek();
+        array[array.length-1] = null;
+        array = Arrays.copyOf(array, array.length-1);
+        return res;
+    }
 }
-

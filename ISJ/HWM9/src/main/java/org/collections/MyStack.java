@@ -2,14 +2,10 @@ package org.collections;
 
 import java.util.Arrays;
 
-public class MyArrayList <T> {
+public class MyStack <T>{
     private T[] array = (T[]) new Object[0];
 
-    public MyArrayList(){
-
-    }
-
-    public void add(T value){
+    public void push(T value){
         array = Arrays.copyOf(array, array.length+1);
         array[array.length-1] = value;
     }
@@ -33,11 +29,14 @@ public class MyArrayList <T> {
         return array.length;
     }
 
-    public T get(int index){
-        return array[index];
+    public T peek(){
+        return array[array.length-1];
     }
 
-
-
+    public T pop(){
+        T res = peek();
+        array[array.length-1] = null;
+        array = Arrays.copyOf(array, array.length-1);
+        return res;
+    }
 }
-
